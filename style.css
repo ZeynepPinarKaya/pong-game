@@ -1,0 +1,35 @@
+body{
+  text-align: center;  
+}
+
+#pong {
+    background-color: #111;
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#playerPlat {
+    background-color: paleturquoise;
+}
+
+#aiPlat {
+    background-color: orange;
+    right: 0px;
+}
+
+#ball {
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    left: 200px;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.plat {
+    height:100px ;
+    width: 20px;
+    position: absolute;
+}
