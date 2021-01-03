@@ -2,26 +2,44 @@ const $pong = $('#pong');
 const $playerPlat = $('#playerPlat');
 const $aiPlat = $('#aiPlat');
 const $ball = $('#ball');
+const $restart = $('#restart');
 
 const UP_LEFT = -3 * Math.PI / 4;
 const UP_RIGHT = -Math.PI / 4;
 const DOWN_LEFT = 3 * Math.PI / 4;
 const DOWN_RIGHT = Math.PI / 4;
 
-const aiPlat = {
-    direction: 1,
-    speed: 5,
-    top: 0
+let interval = null;
+let aiPlat = null;
+let ball = null;
+
+$restart.click(function () {
+    init();
+})
+
+function init() {
+    aiPlat = {
+        direction: 1,
+        speed: 6,
+        top: 0
+    }
+
+    ball = {
+        top: 200,
+        left: 200,
+        angle: UP_LEFT,
+        speed: 6
+    }
+
+    interval = setInterval(update, 20);
 }
 
-const ball = {
-    top: 200,
-    left: 200,
-    angle: UP_LEFT,
-    speed: 3
-}
 
-$pong.mousemove(function(ev){
+$pong.mousemove(function (ev) {
+    if (!interval) {
+        return;
+    }
+
     const top = Math.min($pong.height() - $playerPlat.height(),
         ev.pageY - $pong.offset().top);
 
@@ -45,65 +63,76 @@ function updateBall() {
         left: `${ball.left}px`
     });
 
-    if(isBallOverlappingWithPlayerPlat()){
-        if(ball.angle === UP_LEFT) {
+    if (isBallOverlappingWithPlayerPlat()) {
+        if (ball.angle === UP_LEFT) {
             ball.angle = UP_RIGHT;
-        } 
+        }
         else {
             ball.angle = DOWN_RIGHT;
         }
     }
 
-    if(isBallOverlappingWithAiPlat()){
-        if(ball.angle === UP_RIGHT) {
+    if (isBallOverlappingWithAiPlat()) {
+        if (ball.angle === UP_RIGHT) {
             ball.angle = UP_LEFT;
-        } 
+        }
         else {
             ball.angle = DOWN_LEFT;
         }
     }
 
-    if(isBallOverlappingWithTop()) {
-        if(ball.angle === UP_RIGHT) {
+    if (isBallOverlappingWithTop()) {
+        if (ball.angle === UP_RIGHT) {
             ball.angle = DOWN_RIGHT;
-        } 
+        }
         else {
             ball.angle = DOWN_LEFT;
         }
     }
 
-    if(isBallOverlappingWithBottom()) {
-        if(ball.angle === DOWN_RIGHT) {
+    if (isBallOverlappingWithBottom()) {
+        if (ball.angle === DOWN_RIGHT) {
             ball.angle = UP_RIGHT;
-        } 
+        }
         else {
             ball.angle = UP_LEFT;
         }
     }
+
+    const winner = getWinner();
+    if (winner) {
+        endGame(winner);
+    }
 }
 
-function isBallOverlappingWithPlayerPlat () {
-    return $ball.overlaps('#playerPlat').length >  0;
+function endGame(winner) {
+    clearInterval(interval);
+    interval = null;
+    alert(`${winner} won the game`);
 }
 
-function isBallOverlappingWithAiPlat () {
-    return $ball.overlaps('#aiPlat').length >  0;
+function isBallOverlappingWithPlayerPlat() {
+    return $ball.overlaps('#playerPlat').length > 0;
 }
 
-function isBallOverlappingWithTop () {
+function isBallOverlappingWithAiPlat() {
+    return $ball.overlaps('#aiPlat').length > 0;
+}
+
+function isBallOverlappingWithTop() {
     return ball.top <= 0;
 }
 
-function isBallOverlappingWithBottom () {
+function isBallOverlappingWithBottom() {
     return ball.top >= $pong.height() - $ball.height();
 }
 
-function updateAiPlat () {
-    if(aiPlat.top > $pong.height() - $playerPlat.height()) {
+function updateAiPlat() {
+    if (aiPlat.top > $pong.height() - $playerPlat.height()) {
         aiPlat.direction = -1;
     };
 
-    if(aiPlat.top < 0) {
+    if (aiPlat.top < 0) {
         aiPlat.direction = 1;
     };
 
@@ -114,4 +143,16 @@ function updateAiPlat () {
     });
 }
 
-setInterval(update, 20);
+function getWinner() {
+    if (ball.left < 0) {
+        return 'Computer';
+    } else if (ball.left > $pong.width()) {
+        return 'You';
+    }
+    else {
+        return false;
+    }
+}
+
+
+init();
