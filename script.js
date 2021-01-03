@@ -4,6 +4,7 @@ const $aiPlat = $('#aiPlat');
 const $ball = $('#ball');
 const $restart = $('#restart');
 
+
 const UP_LEFT = -3 * Math.PI / 4;
 const UP_RIGHT = -Math.PI / 4;
 const DOWN_LEFT = 3 * Math.PI / 4;
@@ -13,6 +14,12 @@ let interval = null;
 let aiPlat = null;
 let ball = null;
 
+let playerScore = 0;
+let compScore = 0;
+
+let text1 = document.querySelector(".text");
+text1.innerHTML = `You: ${playerScore} | ${compScore} :Comp` ;
+
 $restart.click(function () {
     init();
 })
@@ -20,13 +27,13 @@ $restart.click(function () {
 function init() {
     aiPlat = {
         direction: 1,
-        speed: 6,
+        speed: 8,
         top: 0
     }
 
     ball = {
         top: 200,
-        left: 200,
+        left: 300,
         angle: UP_LEFT,
         speed: 6
     }
@@ -109,6 +116,14 @@ function endGame(winner) {
     clearInterval(interval);
     interval = null;
     alert(`${winner} won the game`);
+    calculateScore();
+}
+
+function calculateScore() {
+    if(getWinner() == "Computer"){compScore++}
+    if(getWinner() == "You") {playerScore++}
+    text1.innerHTML = `You: ${playerScore} | ${compScore} :Comp` ;
+
 }
 
 function isBallOverlappingWithPlayerPlat() {
@@ -153,6 +168,5 @@ function getWinner() {
         return false;
     }
 }
-
 
 init();
