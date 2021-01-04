@@ -118,6 +118,9 @@ function endGame(winner) {
     calculateScore();
     if(playerScore >= 5 || compScore >= 5){
         alert(`${winner} won the game`);
+        playerScore = 0;
+        compScore = 0;
+        text1.innerHTML = `You: ${playerScore} | ${compScore} :Comp` ;
     }
 }
 
@@ -125,6 +128,7 @@ function calculateScore() {
     if(getWinner() == "Computer"){compScore++}
     if(getWinner() == "You") {playerScore++}
     text1.innerHTML = `You: ${playerScore} | ${compScore} :Comp` ;
+
 }
 
 function isBallOverlappingWithPlayerPlat() {
