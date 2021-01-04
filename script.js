@@ -115,15 +115,16 @@ function updateBall() {
 function endGame(winner) {
     clearInterval(interval);
     interval = null;
-    alert(`${winner} won the game`);
     calculateScore();
+    if(playerScore >= 5 || compScore >= 5){
+        alert(`${winner} won the game`);
+    }
 }
 
 function calculateScore() {
     if(getWinner() == "Computer"){compScore++}
     if(getWinner() == "You") {playerScore++}
     text1.innerHTML = `You: ${playerScore} | ${compScore} :Comp` ;
-
 }
 
 function isBallOverlappingWithPlayerPlat() {
