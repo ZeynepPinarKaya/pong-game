@@ -27,7 +27,7 @@ $restart.click(function () {
 function init() {
     aiPlat = {
         direction: 1,
-        speed: 8,
+        speed: 13,
         top: 0
     }
 
@@ -35,7 +35,7 @@ function init() {
         top: 200,
         left: 300,
         angle: UP_LEFT,
-        speed: 6
+        speed: 10 * (Math.random() + 1)
     }
 
     interval = setInterval(update, 20);
