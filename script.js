@@ -27,7 +27,7 @@ $restart.click(function () {
 function init() {
     aiPlat = {
         direction: 1,
-        speed: 13,
+        speed: 14,
         top: 0
     }
 
